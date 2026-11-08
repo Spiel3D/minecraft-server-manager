@@ -1,0 +1,12 @@
+[Unit]
+Description=Empêche la mise en veille tant que le panneau Minecraft tourne (sans modifier KDE ni logind)
+BindsTo=minecraft-panel.service
+After=minecraft-panel.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/systemd-inhibit --what=sleep:idle --who="Minecraft Server Manager" --why="Serveurs Minecraft actifs" --mode=block /usr/bin/sleep infinity
+Restart=on-failure
+
+[Install]
+WantedBy=minecraft-panel.service

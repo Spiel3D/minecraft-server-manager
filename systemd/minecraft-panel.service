@@ -1,0 +1,42 @@
+[Unit]
+Description=Minecraft Server Manager (panneau web)
+Documentation=file:///opt/minecraft-panel/app/docs/UTILISATION.md
+After=network-online.target local-fs.target
+Wants=network-online.target
+RequiresMountsFor=/srv/minecraft-data
+
+[Service]
+Type=simple
+User=minecraft-panel
+Group=minecraft-panel
+# Lecture des journaux système (supervision) : accès en lecture seule, limité par le panneau à une liste blanche d'unités
+SupplementaryGroups=systemd-journal
+EnvironmentFile=/etc/minecraft-panel/panel.env
+WorkingDirectory=/opt/minecraft-panel/app
+ExecStart=/opt/minecraft-panel/venv/bin/python -m mcpanel serve
+Restart=on-failure
+RestartSec=5
+
+# Les serveurs Minecraft sont des processus indépendants : ils doivent survivre à un redémarrage du panneau.
+# À l'extinction de la machine, le panneau les arrête proprement (commande « stop ») avant de se terminer.
+KillMode=process
+TimeoutStopSec=150
+RuntimeDirectory=minecraft-panel
+RuntimeDirectoryMode=0750
+RuntimeDirectoryPreserve=yes
+
+# Durcissement (aucun privilège supplémentaire, système en lecture seule sauf les dossiers nécessaires)
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/srv/minecraft-data /var/lib/minecraft-panel
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

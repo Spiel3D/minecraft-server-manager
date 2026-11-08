@@ -1,0 +1,8 @@
+# Les scripts shell doivent garder des fins de ligne Unix (sinon « bad interpreter » sous Linux)
+*.sh text eol=lf
+*.service text eol=lf
+*.timer text eol=lf
+*.py text eol=lf
+*.js text eol=lf
+*.md text eol=lf
+*.png binary

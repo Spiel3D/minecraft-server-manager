@@ -1,0 +1,13 @@
+[Unit]
+Description=Sauvegarde de la configuration du panneau Minecraft (base SQLite, réglages)
+
+[Service]
+Type=oneshot
+User=minecraft-panel
+Group=minecraft-panel
+EnvironmentFile=/etc/minecraft-panel/panel.env
+ExecStart=/opt/minecraft-panel/app/backup-panel.sh
+ReadWritePaths=/srv/minecraft-data /var/lib/minecraft-panel
+ProtectSystem=strict
+ProtectHome=true
+NoNewPrivileges=true

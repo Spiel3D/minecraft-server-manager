@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Dépendances
+        run: pip install -r requirements-dev.txt
+      - name: Suite de tests (faux Java, faux serveur Minecraft, réseau simulé)
+        run: python -m pytest -q
+
+  installer:
+    # Installation → mise à jour → désinstallation dans des dossiers temporaires (systemd simulé, voir tests/installer_smoke.sh)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test des scripts d'installation
+        run: sudo env "PATH=$PATH" bash tests/installer_smoke.sh
+
+  shell-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntaxe des scripts shell
+        run: for f in *.sh tools/*.sh tests/*.sh; do bash -n "$f" && echo "ok $f"; done

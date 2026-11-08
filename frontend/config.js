@@ -1,0 +1,1 @@
+window.MCPANEL_API = "";

@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+
+# Données et secrets : ne JAMAIS publier
+*.db
+*.db-wal
+*.db-shm
+*.db.avant-*
+panel.env
+*.env
+.env*
+*.pem
+*.key
+curseforge*.txt
+
+# Sorties locales
+/captures/
+/screenshots/
+*.log
+*.tar.gz
+*.zip
+
+# Éditeurs / système
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
